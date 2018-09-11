@@ -44,4 +44,9 @@ command:
 guix package -i ReSET
 ```
 
+# Dependencies
+
+python = 2.7
+R >= 3.2
+
 # License
