@@ -8,6 +8,9 @@ ReSET is a tool for discovering robust populations derived from single cell RNA-
 
 Single-cell RNA sequencing enables unbiased analysis of expression patterns, but researchers don’t have the tools for appropriate decision making during the analysis. Our general aim is to introduce unbiased data-driven strategies to identify the appropriate number of robust subpopulations, their discriminatory defining markers and the relationships between populations.
 
+# Workflow diagram
+
+
 # Getting started
 
 To run ReSET on your experimental data, describe your samples in a CSV
