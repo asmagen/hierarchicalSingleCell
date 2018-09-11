@@ -43,6 +43,8 @@ command:
 ```sh
 guix package -i ReSET
 ```
+# Example Data Sources
+[10X Genomics, 4k Pan T Cells from a Healthy Donor](https://support.10xgenomics.com/single-cell-gene-expression/datasets/2.1.0/t_4k)
 
 # Dependencies
 
@@ -50,13 +52,13 @@ python = 2.7
 R >= 3.2
 
 # Contributors (Alphabetical Order by Last Name)
-Jonathan Badger
-Billy Kim
-Assaf Magen (Team Lead)
-Claire Malley
-Chris Rhodes
-Amulya Shastry
-Mamie Wang
+[Jonathan Badger]()
+[Billy Kim]()
+[Assaf Magen]() (Team Lead)
+[Claire Malley]()
+[Chris Rhodes]()
+[Amulya Shastry]()
+[Mamie Wang]()
 
 
 # License
