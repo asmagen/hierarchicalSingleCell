@@ -37,7 +37,7 @@ To see all available options run `ReSET --help`.
 # Install
 A pre-built package is available in this repository.
 
-First, you need to install the [devtools](https://github.com/hadley/devtools) package. You can do this from CRAN. Invoke R and then type
+First, you need to install the [devtools](https://github.com/hadley/devtools) package which is available from CRAN. Invoke R and then type
 
 ```R
 install.packages("devtools")
@@ -48,7 +48,10 @@ Load the devtools package.
 library(devtools)
 ```
 
-
+Install ReSET
+```R
+install_github("kbroman/broman")
+```
 
 binaries for ReSET are available through GNU Guix, the
 functional package manager for reproducible, user-controlled software
