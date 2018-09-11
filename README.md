@@ -35,7 +35,22 @@ ReSET rnaseq my-sample-sheet.csv --settings my-settings.yaml
 To see all available options run `ReSET --help`.
 
 # Install
-Pre-built binaries for ReSET are available through GNU Guix, the
+A pre-built package is available in this repository.
+
+First, you need to install the [devtools](https://github.com/hadley/devtools) package. You can do this from CRAN. Invoke R and then type
+
+```R
+install.packages("devtools")
+```
+
+Load the devtools package.
+```R
+library(devtools)
+```
+
+
+
+binaries for ReSET are available through GNU Guix, the
 functional package manager for reproducible, user-controlled software
 management.  Install the complete pipeline bundle with the following
 command:
