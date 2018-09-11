@@ -52,13 +52,13 @@ python = 2.7
 R >= 3.2
 
 # Contributors (Alphabetical Order by Last Name)
-[Jonathan Badger]()
-[Billy Kim]()
-[Assaf Magen]() (Team Lead)
-[Claire Malley]()
-[Chris Rhodes]()
-[Amulya Shastry]()
-[Mamie Wang]()
+* [Jonathan Badger]()
+* [Billy Kim]()
+* [Assaf Magen]() (Team Lead)
+* [Claire Malley]()
+* [Chris Rhodes]()
+* [Amulya Shastry]()
+* [Mamie Wang]()
 
 
 # License
