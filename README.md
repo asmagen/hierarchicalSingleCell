@@ -50,19 +50,12 @@ library(devtools)
 
 Install ReSET
 ```R
-install_github("kbroman/broman")
+install_github("NCBI-Hackathons/robustSingleCell")
 ```
 
-binaries for ReSET are available through GNU Guix, the
-functional package manager for reproducible, user-controlled software
-management.  Install the complete pipeline bundle with the following
-command:
-
-```sh
-guix package -i ReSET
-```
 # Example Data Sources
 [10X Genomics, 4k Pan T Cells from a Healthy Donor](https://support.10xgenomics.com/single-cell-gene-expression/datasets/2.1.0/t_4k)
+[10X Genomics, 3k Pan T Cells from a Healthy Donor](https://support.10xgenomics.com/single-cell-gene-expression/datasets/2.1.0/t_3k)
 
 # Dependencies
 
