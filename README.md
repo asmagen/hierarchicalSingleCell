@@ -75,4 +75,4 @@ R >= 3.5
 
 
 # License
-GNU MIT
+NCBI-Hackathons/robustSingleCell is licensed under the MIT License. See [LICENSE]() for further details.
