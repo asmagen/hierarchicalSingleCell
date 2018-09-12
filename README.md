@@ -73,6 +73,11 @@ R >= 3.5
 * [Amulya Shastry](https://github.com/amulyashastry)
 * [Mamie Wang](https://github.com/Mamie)
 
+# Presentations
+- [day 1](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/notebook/presentation/robustSingleCellHackathon.pdf)
+- [day 2](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/notebook/presentation/Hackathon%20day%202.pdf)
+- [day 3 (final)](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/notebook/presentation/Hackathon%20Final.pdf)
+- [Plan](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/notebook/presentation/robustSingleCellHackathon.pdf)
 
 # License
 NCBI-Hackathons/robustSingleCell is licensed under the MIT License. See [LICENSE](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/LICENSE) for further details.
