@@ -50,9 +50,9 @@ DE_childrenNodes.limma = function(X, child_node_1_idx, child_node_2_idx,
     my.lm = limma::lmFit(X, design = design) # X is a normalized data matrix
     my.lm = eBayes(my.lm) 
     FC_genes = topTable(my.lm, number=Inf, coef = seq(2,ncol(design)))
-    FC_genes = FC_genes[FC_genes$adj.P.Val < q_thresh, c('logFC', 'adj.P.Val')]
-    FC_genes = FC_genes[FC_genes$logFC > log(FC_thresh, base=2),]
-    FC_genes[order(FC_genes$logFC, decreasing=T),]
+    FC_genes = FC_genes[FC_genes$adj.P.Val < q_thresh & FC_genes$logFC > log(FC_thresh, base=2), c('logFC', 'adj.P.Val')]
+    FC_genes = FC_genes[order(FC_genes$logFC, decreasing =T),]
+    return(FC_genes)
 }
 
 DE_childrenNodes.wilcox = function(X, child_node_1_idx, child_node_2_idx,
@@ -110,7 +110,7 @@ DE_twoExps = function(X_exp1, cn_1_idx_exp1, cn_2_idx_exp1, q_thresh_exp1, FC_th
 #' @param FC_thresh FC threshold
 #' @return the gene symbol of differentially expressed genes
 OverExpressedGenes <- function(membership, expression, q_thresh, FC_thresh) {
-    DE_res = DE_childrenNodes.wilcox(expression, membership, !membership, q_thresh=q_thresh, FC_thresh=FC_thresh)
+    DE_res = DE_childrenNodes.limma(expression, membership, !membership, q_thresh=q_thresh, FC_thresh=FC_thresh)
     return(rownames(DE_res))
 }
 
