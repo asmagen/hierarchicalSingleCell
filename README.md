@@ -1,4 +1,4 @@
-# Discovery of cell subpopulations using sigle cell sequencing data and ReSET
+# Discovery of cell subpopulations using single cell sequencing data and ReSET
 
 # What is ReSET (Robust Subpopulation dEcision Trees)?
 
