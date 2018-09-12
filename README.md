@@ -62,7 +62,7 @@ install_github("NCBI-Hackathons/robustSingleCell")
 
 python = 2.7
 
-R >= 3.2
+R >= 3.5
 
 # Contributors (Alphabetical Order)
 * [Assaf Magen]() (Team Lead)
