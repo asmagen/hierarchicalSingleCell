@@ -65,13 +65,13 @@ python = 2.7
 R >= 3.5
 
 # Contributors (Alphabetical Order)
-* [Assaf Magen]() (Team Lead)
-* [Jonathan Badger]()
-* [Billy Kim]()
-* [Claire Malley]()
-* [Chris Rhodes]()
-* [Amulya Shastry]()
-* [Mamie Wang]()
+* [Assaf Magen](https://github.com/asmagen) (Team Lead)
+* [Jonathan Badger](https://github.com/jhbadger)
+* [Billy Kim](https://github.com/bkim62)
+* [Claire Malley](https://github.com/cemalley)
+* [Chris Rhodes](https://github.com/ctrhodes)
+* [Amulya Shastry](https://github.com/amulyashastry)
+* [Mamie Wang](https://github.com/Mamie)
 
 
 # License
