@@ -64,7 +64,7 @@ python = 2.7
 
 R >= 3.5
 
-# Contributors (Alphabetical Order)
+# Project Team (Alphabetical Order)
 * [Assaf Magen](https://github.com/asmagen) (Team Lead)
 * [Jonathan Badger](https://github.com/jhbadger)
 * [Billy Kim](https://github.com/bkim62)
@@ -75,3 +75,4 @@ R >= 3.5
 
 
 # License
+GNU MIT
