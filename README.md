@@ -75,4 +75,4 @@ R >= 3.5
 
 
 # License
-NCBI-Hackathons/robustSingleCell is licensed under the MIT License. See [LICENSE]() for further details.
+NCBI-Hackathons/robustSingleCell is licensed under the MIT License. See [LICENSE](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/LICENSE) for further details.
