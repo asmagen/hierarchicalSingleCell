@@ -9,7 +9,7 @@ ReSET is a tool that leverages the knowledge of cell cluster heirarchy to discov
 Single-cell RNA sequencing enables unbiased analysis of expression patterns, but researchers don’t have the tools for appropriate decision making during the analysis. Our general aim is to introduce unbiased data-driven strategies to identify the appropriate number of robust subpopulations, their discriminatory defining markers and the relationships between populations.
 
 # Workflow diagram
-![pipeline-diagram](https://github.com/NCBI-Hackathons/robustSingleCell/tree/master/docs/presentation/ReSET pipeline.png)
+![pipeline-diagram](https://github.com/NCBI-Hackathons/robustSingleCell/tree/master/docs/presentation/ReSET-pipeline.png)
 
 # Getting started
 
@@ -74,10 +74,10 @@ R >= 3.5
 * [Mamie Wang](https://github.com/Mamie)
 
 # Presentations
-- [day 1](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/notebook/presentation/robustSingleCellHackathon.pdf)
-- [day 2](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/notebook/presentation/Hackathon%20day%202.pdf)
-- [day 3 (final)](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/notebook/presentation/Hackathon%20Final.pdf)
-- [Plan](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/notebook/presentation/robustSingleCellHackathon.pdf)
+- [day 1](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/docs/presentation/robustSingleCellHackathon.pdf)
+- [day 2](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/docs/presentation/Hackathon%20day%202.pdf)
+- [day 3 (final)](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/docs/presentation/Hackathon%20Final.pdf)
+- [Plan](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/docs/presentation/robustSingleCellHackathon.pdf)
 
 # License
 NCBI-Hackathons/robustSingleCell is licensed under the MIT License. See [LICENSE](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/LICENSE) for further details.
