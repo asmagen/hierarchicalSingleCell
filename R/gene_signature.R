@@ -4,6 +4,30 @@ suppressMessages({
     library(limma)
 })
 
+#' Given a ancestor matrix of the hierarchy and corresponding description
+#' of the leaves, return a name for each internal nodes
+#' @param id_matrix a $m \times k$ matrix that indicates the membership of
+#' nodes at each level ($m$ is the number of cells and $k$ is the number of 
+#' splits)
+#' @param cell_desc a $m \times 1$ vector that indicates the annotation at the
+#' bottom of the hierarchy
+#' @return a ancestor matrix replacing id with corresponding name according to
+#' last number
+word_ancestor_matrix = function(id_matrix, cell_desc){
+    K = seq(ncol(id_matrix))
+    desc.df = c()
+    for (k in K) {
+        id = id_matrix[,k]
+        unique_labels = data.frame(id = id, desc=cell_desc) %>% distinct()
+        label.df = concatLabels(unique_labels)
+        label.map = hashmap(label.df$id, label.df$desc)
+        desc = sapply(id, function(x) label.map[[as.numeric(x)]])
+        desc.df = cbind(desc.df, desc)
+    }                
+    colnames(desc.df) = K
+    return(desc.df)
+}
+
 #' Return the differentially expressed genes between two children node of a tree
 #'
 #' @param n genes by m cell count matrix of gene expression

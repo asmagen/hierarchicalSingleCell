@@ -9,7 +9,7 @@ ReSET is a tool that leverages the knowledge of cell cluster heirarchy to discov
 Single-cell RNA sequencing enables unbiased analysis of expression patterns, but researchers don’t have the tools for appropriate decision making during the analysis. Our general aim is to introduce unbiased data-driven strategies to identify the appropriate number of robust subpopulations, their discriminatory defining markers and the relationships between populations.
 
 # Workflow diagram
-![Alt text](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/ReSET%20pipeline.png?raw=true)
+![pipeline-diagram](https://github.com/NCBI-Hackathons/robustSingleCell/tree/master/docs/presentation/ReSET pipeline.png)
 
 # Getting started
 

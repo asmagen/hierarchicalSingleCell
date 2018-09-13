@@ -1,0 +1,16 @@
+Package: ReSET
+Title: Robust Subpopulation dEcision Trees
+Version: 0.0.0.9000
+Authors@R: c(person("Assaf", "Magen", email = "first.last@example.com", role = c("aut", "cre")),
+             person("Jonanthan", "Badger", email = "first.last@example.com", role = c("aut", "cre")),
+             person("Billy", "Kim", email = "first.last@example.com", role = c("aut", "cre")),
+             person("Claire", "Malley", email = "first.last@example.com", role = c("aut", "cre")),
+             person("Christopher", "Rhodes", email = "first.last@example.com", role = c("aut", "cre")),
+             person("Amulya", "Shastry", email = "first.last@example.com", role = c("aut", "cre")),
+             person("Mamie", "Wang", email = "szmamie@live.com", role = c("aut", "cre")),
+           )
+Description: ReSET is a tool that leverages the knowledge of cell cluster heirarchy to discover robust populations derived from single cell RNA-Seq experiments.
+Depends: R (>= 3.5.0)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
