@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: c(person("Assaf", "Magen", email = "first.last@example.com", role = c("aut", "cre")),
              person("Jonanthan", "Badger", email = "first.last@example.com", role = c("aut", "cre")),
              person("Billy", "Kim", email = "first.last@example.com", role = c("aut", "cre")),
-             person("Claire", "Malley", email = "first.last@example.com", role = c("aut", "cre")),
+             person("Claire", "Malley", email = "c.malley1@icloud.com", role = c("aut", "cre")),
              person("Christopher", "Rhodes", email = "first.last@example.com", role = c("aut", "cre")),
              person("Amulya", "Shastry", email = "first.last@example.com", role = c("aut", "cre")),
              person("Mamie", "Wang", email = "szmamie@live.com", role = c("aut", "cre")),
