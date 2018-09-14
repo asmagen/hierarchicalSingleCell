@@ -18,7 +18,6 @@ fwrite(data1.cbind, 't3.expression.cutree.csv',row.names = T, col.names = T, quo
 
 data1.cbind <- read.table('t3.expression.cutree.csv', row.names=1)
 names(data1.cbind) <- gsub("-", "_", names(data1.cbind))
-
 train <- sample(nrow(data1.cbind), 0.7*nrow(data1.cbind), replace = FALSE)
 
 TrainSet <- data1.cbind[train,]
