@@ -20,6 +20,7 @@
 #' t4.data <- as.data.frame(as.matrix(t4@raw.data))
 
 qc <- function(input_data){
+  # remove ribosomal protein genes
   rp.genes <- row.names(x)[grep('^RP', row.names(x))]
   
   x <- subset(x, !(row.names(x) %in% c(rp.genes)))
