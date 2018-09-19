@@ -1,8 +1,3 @@
-suppressMessages({
-    library(tidyverse)
-    library(limma)
-})
-
 #' Differential expression that iteratively compares one cluster against all the others
 #' @param bottom_id the cluster id of each cell
 #' @param normalized the normalized expression matrix with column ordered as the bottom_id

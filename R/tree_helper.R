@@ -1,6 +1,3 @@
-suppressMessages({
-    library(tidyverse)
-})
 #' Given a ancestor matrix of the hierarchy and corresponding description
 #' of the leaves, return a name for each internal nodes
 #' @param id_matrix a $m \times k$ matrix that indicates the membership of

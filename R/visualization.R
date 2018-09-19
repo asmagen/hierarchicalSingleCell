@@ -1,7 +1,3 @@
-suppressMessages({
-    library(tidyverse)
-})
-
 #' return the pairwise Jaccard coefficients between two experiemnts
 #' @param inputA a data frame with column names node (the name of the cluster) and
 #' gene (all overexpressed gene of the node)
