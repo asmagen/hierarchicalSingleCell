@@ -20,6 +20,8 @@
 #' t4.data <- as.data.frame(as.matrix(t4@raw.data))
 
 qc <- function(input_data){
+  x <- input_data
+  
   # remove ribosomal protein genes
   rp.genes <- row.names(x)[grep('^RP', row.names(x))]
   
@@ -29,7 +31,7 @@ qc <- function(input_data){
   cellinfo <- data.frame(Cell=c(names(x)), row.names = names(x))
   x <- SingleCellExperiment(assays = list(counts = as.matrix(x)), colData=cellinfo)
   
-  #calculate cpm
+  # calculate cpm
   exprs(x) <- log2(calculateCPM(x, use_size_factors = FALSE) + 1) 
   
   # calculate qc metrics
