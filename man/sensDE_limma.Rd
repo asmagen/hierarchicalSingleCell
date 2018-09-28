@@ -8,7 +8,7 @@ sensDE_limma(expression, unique_cluster_membership, q_thresh = 0.1,
   FC_thresh = 1.2)
 }
 \arguments{
-\item{expression}{$m \times n$ expression matrix with $m$ genes and $n$ cells}
+\item{expression}{m by n expression matrix with $m$ genes and $n$ cells}
 
 \item{unique_cluster_membership}{a logical vector of size $n$ that indicates membership}
 

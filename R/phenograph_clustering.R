@@ -9,7 +9,7 @@
 #' @return A list containing a data matrix of membership at each K and a
 #' vector of clustering modularity
 #' @export
-#' @example
+#' @examples
 #' iris_unique = unique(iris) # Remove duplicates
 #' data = as.matrix(iris_unique[,1:4])
 #' K = seq(10, 50, length.out=5)

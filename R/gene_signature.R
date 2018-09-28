@@ -23,7 +23,7 @@ SimpleDE = function(bottom_id, normalized, q_thresh = 0.1, FC_thresh = 1.2) {
 }
 
 #' Use limma to find differentially expressed genes
-#' @param expression $m \times n$ expression matrix with $m$ genes and $n$ cells
+#' @param expression m by n expression matrix with $m$ genes and $n$ cells
 #' @param unique_cluster_membership a logical vector of size $n$ that indicates membership
 #' @param q_thresh q value threshold for DE analysis
 #' @param FC_thresh fold change threshold for DE analysis
@@ -41,7 +41,7 @@ sensDE_limma = function(expression, unique_cluster_membership, q_thresh = 0.1, F
 
 #' sensitive DE at level k of the hierarchy
 #' @param cluster_name the name of the clusters that each cell belongs to
-#' @param expression $m \times n$ expression matrix for $m$ genes and $n$ cells
+#' @param expression m by n expression matrix for $m$ genes and $n$ cells
 #' @param q_thresh q value threshold for DE analysis
 #' @param FC_thresh fold change threshold for DE analysis
 #' @return differentially expressed genes for each cluster

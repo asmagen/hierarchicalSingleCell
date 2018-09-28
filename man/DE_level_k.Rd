@@ -9,7 +9,7 @@ DE_level_k(cluster_name, expression, q_thresh, FC_thresh)
 \arguments{
 \item{cluster_name}{the name of the clusters that each cell belongs to}
 
-\item{expression}{$m \times n$ expression matrix for $m$ genes and $n$ cells}
+\item{expression}{m by n expression matrix for $m$ genes and $n$ cells}
 
 \item{q_thresh}{q value threshold for DE analysis}
 

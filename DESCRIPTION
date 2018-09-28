@@ -15,6 +15,15 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports:
-  limma
-Depends:
+  limma,
+  INLA,
+  phylodyn,
+  ggplot2,
+  tidyr,
+  dplyr
+Suggests:
+  testthat,
+  knitr,
+  rmarkdown
+VignetteBuilder: knitr
 RoxygenNote: 6.1.0.9000
