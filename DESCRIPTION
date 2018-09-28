@@ -20,7 +20,8 @@ Imports:
   phylodyn,
   ggplot2,
   tidyr,
-  dplyr
+  dplyr,
+  seriation
 Suggests:
   testthat,
   knitr,

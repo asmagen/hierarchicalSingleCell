@@ -1,0 +1,92 @@
+---
+title: "Hierarchy construction"
+author: "Meng Wang"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+In this document, we used PCs on the preprocessed fibroblast dataset to perform PhenoGraph analysis. We will demonstrate PhenoGraph clustering with `k = 30` and construct a hierarchy based on the cluster mean. The hierarchy will be written as a dendrogram object into data/ folder. 
+
+First, we load the data. `fibro` is a 2000 by 392 data frame (2000 genes and 392 cells). We first compute the PCs on the genes. 
+```{r load-data}
+load('../data/Fibroblast_reprogramming_data_pca.RData')
+
+fibro.trans = apply(fibro, 2, asinh)
+set.seed(1)
+pca = rsvd::rpca(t(fibro.trans), center=T, scale=T, retx=T, k=nrow(fibro))
+```
+
+Here are some diagnostic of the PC. Visually, the elbow is located around 10. To determine the optimal cutoff, we use a permutation test from a [recent paper](https://portals.broadinstitute.org/single_cell/study/small-intestinal-epithelium).
+
+```{r scree-plot, fig.width=5, fig.width=3}
+rsvd::ggscreeplot(pca)
+```
+
+We consider the top 100 PCs based on the screeplot. 7 PC is optimal based on 100 permutations at a cutoff of 0.05:
+
+```{r permutation-test}
+load("../data/phenograph_clustering/permutation.RData")
+# permutation.test.res = ReSET::PCPermutationTest(t(fibro.trans), B=100, threshold=0.05, seed=1)
+# save(permutation.test.res, file='./phenograph_clustering/permutation.RData')
+permutation.test.res$r
+```
+
+The input to PhenoGraph is therefore the top 7 PCs for the 392 cells and here is a view to the data matrix:
+
+```{r view-pc}
+input.data = pca$x[,1:7]
+colnames(input.data) = paste0('PC', seq(7))
+kableExtra::kable_styling(kableExtra::kable(head(input.data, n = 3)))
+```
+
+We then use the PCs to run PhenoGraph at different resolution (`K = 5, 10, 20, 30, 40, 50, 60, 90`).
+
+```{r phenograph-cluster, message=FALSE, warning=FALSE, include=FALSE}
+suppressMessages(phenograph.cluster <- ReSET::PhenoGraphVarRes(input.data, K=seq(10, 100, by=10)))
+```
+
+The elbow of number of clusters occurs around 20 - 30. Let's use 30 as a demonstration. 
+```{r, fig.width=5, fig.height=3}
+ggplot2::qplot(phenograph.cluster$k, phenograph.cluster$numCluster) + ggplot2::theme_classic() + ggplot2::xlab('k') +
+  ggplot2::ylab('cluster numbers')
+```
+
+The number of clusters plateaus at 4 when $k = 70$ or larger. There is also a elbow region starting from $20 - 40$. 
+
+$k = 30$:
+```{r}
+kableExtra::kable_styling(kableExtra::kable(table(cluster.id=phenograph.cluster$membership[,'30'])))
+```
+
+$k = 60$:
+```{r}
+kableExtra::kable_styling(kableExtra::kable(table(cluster.id=phenograph.cluster$membership[,'70'])))
+```
+
+Let's create a hierarchy based on the cluster mean for the two resolution when $k = 30$. 
+
+```{r, hierarchy, fig.width=5, fig.height=3}
+hierarchy.k30 = ReSET::ConstructHierarchy(t(fibro.trans), membership = phenograph.cluster$membership[,'30'], mean)
+plot(hierarchy.k30$dend)
+```
+
+A heatmap of the results are shown as follows:
+
+```{r, heatmap, fig.width=6, fig.height=3}
+plot(hierarchy.k30)
+```
+
+For $k = 70$: 
+
+```{r, fig.width=5, fig.height=3}
+hierarchy.k70 = ReSET::ConstructHierarchy(t(fibro.trans), membership = phenograph.cluster$membership[,'70'], mean)
+plot(hierarchy.k70$dend)
+```
+
+```{r, fig.width=6, fig.height=3}
+plot(hierarchy.k70)
+```
