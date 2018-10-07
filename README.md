@@ -2,7 +2,7 @@
 
 # What is ReSET (Robust Subpopulation dEcision Trees)?
 
-ReSET is a tool that leverages the knowledge of cell cluster heirarchy to discover robust populations derived from single cell RNA-Seq experiments. ReSET creates a heirarchical model that fits two independent single cell RNA-Seq datasets.
+ReSET is a tool that leverages the knowledge of cell cluster hierarchy to discover robust populations derived from single cell RNA-Seq experiments. ReSET creates a hierarchical model that fits two independent single cell RNA-Seq datasets.
 
 # Overview
 
