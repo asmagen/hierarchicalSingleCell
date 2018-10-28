@@ -1,0 +1,32 @@
+---
+title: "10X_data_phenograph"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+# Purpose
+
+To evaluate the hierarchy constructed by benchmark method (PhenoGraph mean + hierarchical clustering). As a first step, we want to find whether the strong signal between CD4 and CD8 cell is detected in the PhenoGraph clustering method. 
+
+# Workflow
+- Perform PhenoGraph clustering method on the data
+- Perform differential gene expression for each cluster against the others
+- Evaluation:
+  - Construct the confusion matrix between the cluster assignment (CD8A high, CD4 high) and the proportion of cells expressing CD8A and CD4
+  - Plot the heatmap of canonical markers vs clusters (proportion and median expression level)
+
+# Implementation
+
+Let's work on the 3k data first. We want to filter on the markers that are 
+
+```{r 3kdata}
+load('/Users/szmamie/Documents/repos/robustSingleCell/data/assafNormedData/T3k.RData')
+pca_3k <- rsvd::rpca(t(normalized), center=T, scale=T, retx=T, k=nrow(normalized))
+
+data_3k_clusters <- ReSET::PhenoGraphVarRes(t(normalized), K=c(30))
+
+```
