@@ -16,3 +16,6 @@ A heatmap.2 object
 \description{
 Plot Hierarchy Constructed
 }
+\author{
+Meng Wang
+}
