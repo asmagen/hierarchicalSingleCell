@@ -22,5 +22,5 @@ cost_matrix
 
 align_obj <- ReSET::create_align_object(T_1, T_2, cost_matrix)
 align_obj <- ReSET::initialize(align_obj)
-
+align_obj <- ReSET::fill_matrix(align_obj)
 
