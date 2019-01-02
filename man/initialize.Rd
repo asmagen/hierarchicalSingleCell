@@ -2,20 +2,16 @@
 % Please edit documentation in R/tree_functions.R
 \name{initialize}
 \alias{initialize}
-\title{Initialize the matrix to store alignment score}
+\title{Intialize the T matrix and F map}
 \usage{
-initialize(T1, T2, cost_matrix)
+initialize(align_object)
 }
 \arguments{
-\item{T1}{tree 1}
-
-\item{T2}{tree 2}
-
-\item{cost_matrix}{The cost matrix}
+\item{align_object}{An alignment object}
 }
 \value{
-A list of T matrix and F map
+An alignment object with T matrix and F map initialized
 }
 \description{
-Initialize the matrix to store alignment score
+Intialize the T matrix and F map
 }

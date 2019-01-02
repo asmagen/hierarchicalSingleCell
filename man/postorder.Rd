@@ -2,16 +2,10 @@
 % Please edit documentation in R/tree_functions.R
 \name{postorder}
 \alias{postorder}
-\title{Get labels by postorder traversal}
+\title{A skeleton function}
 \usage{
-postorder(x)
-}
-\arguments{
-\item{x}{A root node of tree}
-}
-\value{
-labels of tree in postorder
+postorder(x, f)
 }
 \description{
-Get labels by postorder traversal
+A skeleton function
 }

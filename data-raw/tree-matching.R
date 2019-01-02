@@ -1,5 +1,5 @@
 # implement Jiang et al (1994) tree traversal
-T_1 <- ReSET::binary_tree('a', right = ReSET::binary_tree('c'))
+T_1 <- ReSET::binary_tree('a', left = ReSET::binary_tree('c'))
 
 T_2 <- ReSET::binary_tree('a', 
                  left = ReSET::binary_tree('b'))
@@ -13,8 +13,8 @@ cost_matrix <- matrix(
   nrow = length(ordered_T1), byrow = F)
 rownames(cost_matrix) <- ordered_T1
 colnames(cost_matrix) <- ordered_T2
-cost_matrix <- rbind(lambda = rep(0.5, ncol(cost_matrix)), cost_matrix)
-cost_matrix <- cbind(lambda = c(0, rep(0.5, nrow(cost_matrix)-1)), cost_matrix)
+cost_matrix <- rbind(lambda = rep(0.3, ncol(cost_matrix)), cost_matrix)
+cost_matrix <- cbind(lambda = c(0, rep(0.3, nrow(cost_matrix)-1)), cost_matrix)
 cost_matrix
 
 align_obj <- ReSET::create_align_object(T_1, T_2, cost_matrix)

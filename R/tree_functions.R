@@ -51,9 +51,11 @@ initialize_T1 <- function(align_object) {
   T1_node <- rownames(align_object$T_matrix)[-1]
   for (node in T1_node) {
     children <- align_object$T1_children[node, ]
-    F_node_lambda <- sum(align_object$T_matrix[children, "lambda"])
-    align_object$F_map[[paste_collapse(1, node, 1, 2, 'lambda')]] <- F_node_lambda
-    align_object$T_matrix[node, "lambda"] <- F_node_lambda + align_object$cost_matrix[node, "lambda"]
+    F_node_lambda <- align_object$T_matrix[children, "lambda"]
+    align_object$F_map[[paste_collapse(1, node, 1, 1, 'lambda')]] <- 2 * F_node_lambda[1]
+    align_object$F_map[[paste_collapse(1, node, 2, 2, 'lambda')]] <- 2 * F_node_lambda[2]
+    align_object$F_map[[paste_collapse(1, node, 1, 2, 'lambda')]] <- sum(F_node_lambda)
+    align_object$T_matrix[node, "lambda"] <- sum(F_node_lambda) + align_object$cost_matrix[node, "lambda"]
   }
   return(align_object)
 }
@@ -62,13 +64,22 @@ initialize_T2 <- function(align_object) {
   T2_node <- colnames(align_object$T_matrix)[-1]
   for (node in T2_node) {
     children <- align_object$T2_children[node, ]
-    lambda_F_node <- sum(align_object$T_matrix["lambda", children])
-    align_object$F_map[[paste_collapse('lambda', 2, node, 1, 2)]] <- lambda_F_node
-    align_object$T_matrix["lambda", node] <- lambda_F_node + align_object$cost_matrix["lambda", node]
+    lambda_F_node <- align_object$T_matrix["lambda", children]
+    # print('intialization')
+    # print(paste(c(paste_collapse('lambda', 2, node, 1, 1), lambda_F_node), collapse = ', '))
+    align_object$F_map[[paste_collapse('lambda', 2, node, 1, 1)]] <- 2 * lambda_F_node[1]
+    align_object$F_map[[paste_collapse('lambda', 2, node, 2, 2)]] <- 2 * lambda_F_node[2]
+    align_object$F_map[[paste_collapse('lambda', 2, node, 1, 2)]] <- sum(lambda_F_node)
+    align_object$T_matrix["lambda", node] <- sum(lambda_F_node) + align_object$cost_matrix["lambda", node]
   }
   return(align_object)
 }
 
+#' Intialize the T matrix and F map
+#' 
+#' @param align_object An alignment object
+#' @return An alignment object with T matrix and F map initialized
+#' @export
 initialize <- function(align_object) {
   align_object$T1_children <- create_children_map(align_object$T1)
   align_object$T2_children <- create_children_map(align_object$T2)
@@ -117,6 +128,11 @@ T1_T2 <- function(align_obj, i, j) {
   F_i_j + align_obj$cost_matrix[i, j]
 }
 
+#' Fill T matrix and F map
+#' 
+#' @param align_obj An alignment object
+#' @return An alignment object with T matrix and F map filled
+#' @export
 fill_matrix <- function(align_obj) {
   align_obj$choice <- align_obj$T_matrix
   align_obj$choice[,] <- NA
@@ -136,7 +152,7 @@ fill_matrix <- function(align_obj) {
       cost <- c(cost, lambda_T2(align_obj, i, j))
       cost <- c(cost, T1_lambda(align_obj, i, j))
       cost <- c(cost, T1_T2(align_obj, i, j))
-      print(cost)
+      # print(cost)
       align_obj$choice[i, j] <- which.min(cost)
       align_obj$T_matrix[i, j] <- min(cost, na.rm = T)
     }
@@ -153,7 +169,6 @@ fill_F <- function(align_obj, x, y) {
   j <- y[1]
   t <- as.numeric(y[2])
   nj <- as.numeric(y[3])
-  #browser()
   align_obj$F_map[[paste_collapse(1, i, s, s-1, 2, j, t, t - 1)]] <- 0
   for (p in seq(s, mi)) {
     align_obj$F_map[[paste_collapse(1, i, s, p, 2, j, t, t - 1)]] <- 
@@ -178,15 +193,11 @@ fill_F <- function(align_obj, x, y) {
 fill_case_4 <- function(align_obj, i, s, p, j, t, q) {
   case_4 <- c()
   for (k in seq(s, p)) {
-    T1_i_k <- align_obj$T1_children[i, k]
-    if (k == p) {
-      if(T1_i_k == 'lambda') idx1 <- 'lambda'
-      else idx1 <- paste_collapse(1, T1_i_k, 1, 2)
-    }
-    else idx1 <- paste_collapse(1, i, k, p)
+    idx1 <- paste_collapse(1, i, k, p)
     T2_j_q <- align_obj$T2_children[j, q]
     if (T2_j_q == 'lambda') idx2 <- 'lambda'
     else idx2 <- paste_collapse(2, T2_j_q, 1, 2)
+    # print(paste0('4: ', paste_collapse(idx1, idx2)))
     case_4 <- c(case_4, align_obj$F_map[[paste_collapse(1, i, s, k - 1, 2, j, t, q - 1)]] + align_obj$F_map[[paste_collapse(idx1, idx2)]])
   }
   case_4 <- align_obj$cost_matrix['lambda', align_obj$T2_children[j, q]] + min(case_4)
@@ -199,13 +210,8 @@ fill_case_5 <- function(align_obj, i, s, p, j, t, q) {
     T1_i_p <- align_obj$T1_children[i, p]
     if (T1_i_p == 'lambda') idx1 <- 'lambda'
     else idx1 <- paste_collapse(1, T1_i_p, 1, 2)
-    T2_j_k <- align_obj$T2_children[j, k]
-    if (k == q) {
-      if(T2_j_k == 'lambda') idx2 <- 'lambda'
-      else idx2 <- paste_collapse(2, T2_j_k, 1, 2)
-    } 
-    else idx2 <- paste_collapse(2, j, k, q)
-    print(paste_collapse(idx1, idx2))
+    idx2 <- paste_collapse(2, j, k, q)
+    # print(paste_collapse(idx1, idx2))
     case_5 <- c(case_5, align_obj$F_map[[paste_collapse(1, i, s, p - 1, 2, j, t, k - 1)]] + align_obj$F_map[[paste_collapse(idx1, idx2)]])
   }
   case_5 <- align_obj$cost_matrix[align_obj$T1_children[i, p], 'lambda'] + min(case_5)
@@ -223,7 +229,7 @@ fill_F_helper <- function(align_obj, i, s, p, j, t, q) {
   case_5 <- fill_case_5(align_obj, i, s, p, j, t, q)
 
   all <- c(case_1, case_2, case_3, case_4, case_5)
-  print(paste0(paste_collapse(i, s, p, j, t, q), ': ', paste0(all, collapse = ', ')))
+  # print(paste0(paste_collapse(i, s, p, j, t, q), ': ', paste0(all, collapse = ', ')))
   align_obj$F_map[[paste_collapse(1, i, s, p, 2, j, t, q)]] <- min(all)
   return(align_obj)
 }
