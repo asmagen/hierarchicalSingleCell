@@ -310,12 +310,32 @@ as_phylo <- function(binary_tree) {
   return(tree)
 }
 
-deserialize_helper <- function(x, vec, left) {
-  if (vec[1] == ')') {
-    x$left <- binary_tree(label = vec[2])
-    x$right <- deserialize_helper()
+#' scan the vector to find matching right
+break_vec <- function(vec) {
+  print(vec)
+  found <- 0
+  if (vec[1] == ',' && length(vec) == 3) return(list(NULL, vec[2]))
+  for (i in seq_along(vec)) {
+    if (vec[i] == ',' && found == 0) {
+      left <- vec[1:(i-1)]
+      right <- vec[(i+1):(length(vec) - 1)]
+      return(list(left, right))
+    } else {
+      if (vec[i] == ')') found = found + 1
+      if (vec[i] == '(') found = found - 1
+    }
   }
-   
+}
+
+deserialize_helper <- function(x, vec) {
+  if (length(vec) == 0) return(x)
+  else if (vec[1] == ')') {
+    broken_vec <- break_vec(vec[-seq(2)])
+    print(broken_vec)
+    x$left <- deserialize_helper(binary_tree(label = vec[2]), broken_vec[[1]])
+    x$right <- deserialize_helper(binary_tree(label = broken_vec[[2]][1]), broken_vec[[2]][-1])
+  }
+  return(x)
 }
 
 as_binary_tree <- function(newick_string) {
@@ -337,5 +357,6 @@ convert_to_vec <- function(newick_string) {
     else temp <- c(temp, all_char[i])
   }
   vec <- rev(vec)[-c(1, length(vec))]
+  vec <- vec[vec != '']
   return(vec)
 }
