@@ -134,8 +134,9 @@ T1_T2 <- function(align_obj, i, j) {
 #' @return An alignment object with T matrix and F map filled
 #' @export
 fill_matrix <- function(align_obj) {
-  align_obj$choice <- align_obj$T_matrix
-  align_obj$choice[,] <- NA
+  align_obj$T_choice <- align_obj$T_matrix
+  align_obj$T_choice[,] <- NA
+  
   for (i in rownames(align_obj$T_matrix)[-1]) {
     for (j in colnames(align_obj$T_matrix)[-1]) {
       cost <- c()
@@ -153,7 +154,7 @@ fill_matrix <- function(align_obj) {
       cost <- c(cost, T1_lambda(align_obj, i, j))
       cost <- c(cost, T1_T2(align_obj, i, j))
       # print(cost)
-      align_obj$choice[i, j] <- which.min(cost)
+      align_obj$T_choice[i, j] <- which.min(cost)
       align_obj$T_matrix[i, j] <- min(cost, na.rm = T)
     }
   }
@@ -230,6 +231,67 @@ fill_F_helper <- function(align_obj, i, s, p, j, t, q) {
 
   all <- c(case_1, case_2, case_3, case_4, case_5)
   # print(paste0(paste_collapse(i, s, p, j, t, q), ': ', paste0(all, collapse = ', ')))
-  align_obj$F_map[[paste_collapse(1, i, s, p, 2, j, t, q)]] <- min(all)
+  loc <- paste_collapse(1, i, s, p, 2, j, t, q)
+  align_obj$F_map[[loc]] <- min(all)
+  return(align_obj)
+}
+
+
+#' Traceback for constructing aligned tree
+#' 
+traceback <- function(align_obj) {
+  align_obj$alignment <- c()
+  align_obj <- recurse(align_obj, align_obj$T1, align_obj$T2, left = T)
+  return(align_obj)
+}
+
+recurse <- function(align_obj, x, y, left) {
+  x_cond <- is.null(x)
+  y_cond <- is.null(y)
+  if (left & !(x_cond & y_cond)) align_obj$alignment <- c(align_obj$alignment, ')')
+  if (x_cond & !y_cond) {
+    postorder(y, function(t) {
+      align_obj$alignment <<- c(align_obj$alignment, paste_collapse('lambda', t$label))
+    })
+  } else if (y_cond & !x_cond) {
+    postorder(x, function(t) {
+      align_obj$alignment <<- c(align_obj$alignment, paste_collapse(t$label, 'lambda'))
+    })
+  } 
+  else if (!(x_cond | y_cond)) {
+    choix <- align_obj$T_choice[x$label, y$label]
+    if (choix == 3) {
+      align_obj$alignment <- c(align_obj$alignment,  paste_collapse(x$label, y$label))
+      align_obj <- recurse(align_obj, x$left, y$left, left = T)
+      align_obj <- recurse(align_obj, x$right, y$right, left = F)
+    } else if (choix == 2) {
+      align_obj$alignment <- c(align_obj$alignment, paste_collapse(x$label, 'lambda'))
+      if (left) {
+        align_obj <- recurse(align_obj, x$left, y, left = T)
+        align_obj <- recurse(align_obj, x$right, NULL, left = F)
+      } else {
+        align_obj <- recurse(align_obj, x$left, NULL, left = T)
+        align_obj <- recurse(align_obj, x$right, y, left = F)
+      }
+    } else if (choix == 1) {
+      align_obj$alignment <- c(align_obj$alignment,  paste_collapse('lambda', y$label))
+      if (left) {
+        align_obj <- recurse(align_obj, x, y$left, left = T)
+        align_obj <- recurse(align_obj, NULL, y$right, left = F)
+      } else {
+        align_obj <- recurse(align_obj, NULL, y$left, left = T)
+        align_obj <- recurse(align_obj, x, y$right, left = F)
+      }
+    }
+  }
+  if (!left & !(x_cond & y_cond)) align_obj$alignment <- c(align_obj$alignment, '(')
+  if (left & !(x_cond & y_cond)) align_obj$alignment <- c(align_obj$alignment, ',')
+  return(align_obj)
+}
+
+build_tree <- function(align_obj) {
+  text <- paste0(paste0(rev(align_obj$alignment[-c(1, length(align_obj$alignment))]), collapse = ''), ';')
+  print(text)
+  align_obj$tree <- ape::read.tree(text = text)
   return(align_obj)
 }

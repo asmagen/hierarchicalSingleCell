@@ -1,8 +1,15 @@
 # implement Jiang et al (1994) tree traversal
-T_1 <- ReSET::binary_tree('a', left = ReSET::binary_tree('c'))
+T_1 <- ReSET::binary_tree('a', 
+                          left = ReSET::binary_tree('e',
+                                                    left = ReSET::binary_tree('b'),
+                                                    right = ReSET::binary_tree('c')),
+                          right = ReSET::binary_tree('d'))
 
 T_2 <- ReSET::binary_tree('a', 
-                 left = ReSET::binary_tree('b'))
+                 left = ReSET::binary_tree('b'),
+                 right = ReSET::binary_tree('f', 
+                                            left = ReSET::binary_tree('c'),
+                                            right = ReSET::binary_tree('d')))
 
 # Create the cost matrix
 ordered_T1 <- ReSET::postorder_labels(T_1)
@@ -20,3 +27,6 @@ cost_matrix
 align_obj <- ReSET::create_align_object(T_1, T_2, cost_matrix)
 align_obj <- ReSET::initialize(align_obj)
 align_obj <- ReSET::fill_matrix(align_obj)
+align_obj <- ReSET::traceback(align_obj)
+align_obj <- ReSET::build_tree(align_obj)
+
