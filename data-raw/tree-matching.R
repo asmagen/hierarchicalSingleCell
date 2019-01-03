@@ -30,3 +30,4 @@ align_obj <- ReSET::fill_matrix(align_obj)
 align_obj <- ReSET::traceback(align_obj)
 align_obj <- ReSET::build_tree(align_obj)
 
+plot(align_obj$tree, show.node.label = T)

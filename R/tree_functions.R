@@ -65,8 +65,6 @@ initialize_T2 <- function(align_object) {
   for (node in T2_node) {
     children <- align_object$T2_children[node, ]
     lambda_F_node <- align_object$T_matrix["lambda", children]
-    # print('intialization')
-    # print(paste(c(paste_collapse('lambda', 2, node, 1, 1), lambda_F_node), collapse = ', '))
     align_object$F_map[[paste_collapse('lambda', 2, node, 1, 1)]] <- 2 * lambda_F_node[1]
     align_object$F_map[[paste_collapse('lambda', 2, node, 2, 2)]] <- 2 * lambda_F_node[2]
     align_object$F_map[[paste_collapse('lambda', 2, node, 1, 2)]] <- sum(lambda_F_node)
@@ -198,7 +196,6 @@ fill_case_4 <- function(align_obj, i, s, p, j, t, q) {
     T2_j_q <- align_obj$T2_children[j, q]
     if (T2_j_q == 'lambda') idx2 <- 'lambda'
     else idx2 <- paste_collapse(2, T2_j_q, 1, 2)
-    # print(paste0('4: ', paste_collapse(idx1, idx2)))
     case_4 <- c(case_4, align_obj$F_map[[paste_collapse(1, i, s, k - 1, 2, j, t, q - 1)]] + align_obj$F_map[[paste_collapse(idx1, idx2)]])
   }
   case_4 <- align_obj$cost_matrix['lambda', align_obj$T2_children[j, q]] + min(case_4)
@@ -212,7 +209,6 @@ fill_case_5 <- function(align_obj, i, s, p, j, t, q) {
     if (T1_i_p == 'lambda') idx1 <- 'lambda'
     else idx1 <- paste_collapse(1, T1_i_p, 1, 2)
     idx2 <- paste_collapse(2, j, k, q)
-    # print(paste_collapse(idx1, idx2))
     case_5 <- c(case_5, align_obj$F_map[[paste_collapse(1, i, s, p - 1, 2, j, t, k - 1)]] + align_obj$F_map[[paste_collapse(idx1, idx2)]])
   }
   case_5 <- align_obj$cost_matrix[align_obj$T1_children[i, p], 'lambda'] + min(case_5)
@@ -230,7 +226,6 @@ fill_F_helper <- function(align_obj, i, s, p, j, t, q) {
   case_5 <- fill_case_5(align_obj, i, s, p, j, t, q)
 
   all <- c(case_1, case_2, case_3, case_4, case_5)
-  # print(paste0(paste_collapse(i, s, p, j, t, q), ': ', paste0(all, collapse = ', ')))
   loc <- paste_collapse(1, i, s, p, 2, j, t, q)
   align_obj$F_map[[loc]] <- min(all)
   return(align_obj)
@@ -291,7 +286,56 @@ recurse <- function(align_obj, x, y, left) {
 
 build_tree <- function(align_obj) {
   text <- paste0(paste0(rev(align_obj$alignment[-c(1, length(align_obj$alignment))]), collapse = ''), ';')
-  print(text)
   align_obj$tree <- ape::read.tree(text = text)
   return(align_obj)
+}
+
+#' convert phylo to binary tree object
+serialize_helper <- function(x, vec, left) {
+  if (is.null(x)) return(vec)
+  else {
+    if (left) vec <- c(vec, ')')
+    vec <- c(vec, x$label)
+    vec <- serialize_helper(x$left, vec, left = T)
+    if (!is.null(x$left)) vec <- c(vec, ',')
+    vec <- serialize_helper(x$right, vec, left = F)
+    if (!is.null(x$right)) vec <- c(vec, '(')
+  }
+  return(vec)
+}
+
+as_phylo <- function(binary_tree) {
+  text <- paste0(paste0(rev(serialize_helper(binary_tree, c(), T)[-1]), collapse = ''), ';')
+  tree <- ape::read.tree(text = text)
+  return(tree)
+}
+
+deserialize_helper <- function(x, vec, left) {
+  if (vec[1] == ')') {
+    x$left <- binary_tree(label = vec[2])
+    x$right <- deserialize_helper()
+  }
+   
+}
+
+as_binary_tree <- function(newick_string) {
+  vec <- convert_to_vec(newick_string)
+  root <- binary_tree(label = vec[1])
+  tree <- deserialize_helper(root, vec[-1])
+  return(tree)
+}
+
+convert_to_vec <- function(newick_string) {
+  vec <- c()
+  all_char <- strsplit(newick_string, split = '')[[1]]
+  temp <- c()
+  for (i in seq_along(all_char)) {
+    if (all_char[i] %in% c(',', '(', ')', ';')) {
+      vec <- c(vec, paste0(temp, collapse = ''), all_char[i])
+      temp <- c()
+    }
+    else temp <- c(temp, all_char[i])
+  }
+  vec <- rev(vec)[-c(1, length(vec))]
+  return(vec)
 }
