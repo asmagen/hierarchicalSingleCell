@@ -1,0 +1,58 @@
+---
+title: "Align trees"
+author: "Meng Wang"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+The purpose of this document is to demonstrate the use of tree alignment using ReSET. We implemented the Jiang et al. 1995 algorithm to align two ordered binary trees. We used the example from Figure 1 of the paper.
+
+Let's construct the two trees. We can plot it as follows. 
+
+```{r}
+T_1 <- ReSET::binary_tree('a', 
+                          left = ReSET::binary_tree('e',
+                                                    left = ReSET::binary_tree('b'),
+                                                    right = ReSET::binary_tree('c')),
+                          right = ReSET::binary_tree('d'))
+
+T_2 <- ReSET::binary_tree('a', 
+                 left = ReSET::binary_tree('b'),
+                 right = ReSET::binary_tree('f', 
+                                            left = ReSET::binary_tree('c'),
+                                            right = ReSET::binary_tree('d')))
+par(mfrow = c(1, 2))
+plot(T_1)
+plot(T_2)
+```
+
+To align the two trees, we first need to provide a pairwise score matrix to define the cost of aligning each possible pair of nodes in the two trees. For example, we defined the cost as the distance between the label in the alphabet (e.g. cost of $a$ and $b$ is 1). In addition, we set the cost of aligning an empty node ($\lambda$) with any node as $0.3$. In our clustering case, it can be the pairwise distance between each clusters. The full matrix is shown as follows. 
+
+```{r}
+ordered_T1 <- ReSET::postorder_labels(T_1)
+ordered_T2 <- ReSET::postorder_labels(T_2)
+cost_matrix <- matrix(
+  apply(expand.grid(T1 = ordered_T1, T2 = ordered_T2), 1, 
+        function(x) abs(as.numeric(charToRaw(x[1])) - as.numeric(charToRaw(x[2])))),
+  nrow = length(ordered_T1), byrow = F)
+rownames(cost_matrix) <- ordered_T1
+colnames(cost_matrix) <- ordered_T2
+cost_matrix <- rbind(lambda = rep(0.3, ncol(cost_matrix)), cost_matrix)
+cost_matrix <- cbind(lambda = c(0, rep(0.3, nrow(cost_matrix)-1)), cost_matrix)
+cost_matrix
+```
+
+The tree aligned is shown as follow. The labels represent aligned T1 (left) and T2 (right) nodes. 
+
+```{r}
+align_obj <- ReSET::align(T_1, T_2, cost_matrix)
+plot(align_obj$tree, show.node.label = T, no.margin = F, 
+       edge.width = 2, edge.color = 'gray', cex = 1.4, font = 1, 
+       label.offset = 0.1, underscore = T)
+```
+
+# TODO (real case)

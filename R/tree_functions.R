@@ -11,8 +11,35 @@ binary_tree <- function(label, left = NULL, right = NULL) {
   return(tree)
 }
 
+#' Generic function for plotting binary tree
+plot <- function(x, ...) {
+  UseMethod("plot", x)
+}
 
-#' A skeleton function
+#' Plot binary tree
+#' @param tree A binary tree object
+#' @export
+plot.binary_tree <- function(tree) {
+  plot(as_phylo(tree), show.node.label = T, no.margin = F, 
+       edge.width = 2, edge.color = 'gray', cex = 1.4, font = 1, 
+       label.offset = 0.1)
+}
+
+#' Align two binary ordered trees
+#' @param T1 A binary tree
+#' @param T2 A binary tree
+#' @param cost_matrix Cost matrix between each pair of nodes in T1 and T2
+#' @return An alignment object
+#' @export
+align <- function(T1, T2, cost_matrix) {
+  align_obj <- create_align_object(T1, T2, cost_matrix)
+  align_obj <- initialize(align_obj)
+  align_obj <- fill_matrix(align_obj)
+  align_obj <- traceback(align_obj)
+  align_obj <- build_tree(align_obj)
+  return(align_obj)
+}
+
 postorder <- function(x, f) {
   if (!is.null(x$left)) postorder(x$left, f)
   if (!is.null(x$right)) postorder(x$right, f)
@@ -233,7 +260,6 @@ fill_F_helper <- function(align_obj, i, s, p, j, t, q) {
 
 
 #' Traceback for constructing aligned tree
-#' 
 traceback <- function(align_obj) {
   align_obj$alignment <- c()
   align_obj <- recurse(align_obj, align_obj$T1, align_obj$T2, left = T)
@@ -331,7 +357,6 @@ deserialize_helper <- function(x, vec) {
   if (length(vec) == 0) return(x)
   else if (vec[1] == ')') {
     broken_vec <- break_vec(vec[-seq(2)])
-    print(broken_vec)
     x$left <- deserialize_helper(binary_tree(label = vec[2]), broken_vec[[1]])
     x$right <- deserialize_helper(binary_tree(label = broken_vec[[2]][1]), broken_vec[[2]][-1])
   }
