@@ -13,7 +13,7 @@ The purpose of this document is to demonstrate the use of tree alignment using R
 
 Let's construct the two trees. We can plot it as follows. 
 
-```{r}
+```{r message=FALSE, warning=FALSE, fig.width = 8, fig.height = 3}
 T_1 <- ReSET::binary_tree('a', 
                           left = ReSET::binary_tree('e',
                                                     left = ReSET::binary_tree('b'),
@@ -32,7 +32,7 @@ plot(T_2)
 
 To align the two trees, we first need to provide a pairwise score matrix to define the cost of aligning each possible pair of nodes in the two trees. For example, we defined the cost as the distance between the label in the alphabet (e.g. cost of $a$ and $b$ is 1). In addition, we set the cost of aligning an empty node ($\lambda$) with any node as $0.3$. In our clustering case, it can be the pairwise distance between each clusters. The full matrix is shown as follows. 
 
-```{r}
+```{r message=FALSE, warning=FALSE, fig.width = 8, fig.height = 3}
 ordered_T1 <- ReSET::postorder_labels(T_1)
 ordered_T2 <- ReSET::postorder_labels(T_2)
 cost_matrix <- matrix(
@@ -48,7 +48,7 @@ cost_matrix
 
 The tree aligned is shown as follow. The labels represent aligned T1 (left) and T2 (right) nodes. 
 
-```{r}
+```{r message=FALSE, warning=FALSE, fig.width = 6, fig.height = 3}
 align_obj <- ReSET::align(T_1, T_2, cost_matrix)
 plot(align_obj$tree, show.node.label = T, no.margin = F, 
        edge.width = 2, edge.color = 'gray', cex = 1.4, font = 1, 

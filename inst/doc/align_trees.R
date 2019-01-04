@@ -1,4 +1,4 @@
-## ------------------------------------------------------------------------
+## ----message=FALSE, warning=FALSE, fig.width = 8, fig.height = 3---------
 T_1 <- ReSET::binary_tree('a', 
                           left = ReSET::binary_tree('e',
                                                     left = ReSET::binary_tree('b'),
@@ -14,7 +14,7 @@ par(mfrow = c(1, 2))
 plot(T_1)
 plot(T_2)
 
-## ------------------------------------------------------------------------
+## ----message=FALSE, warning=FALSE, fig.width = 8, fig.height = 3---------
 ordered_T1 <- ReSET::postorder_labels(T_1)
 ordered_T2 <- ReSET::postorder_labels(T_2)
 cost_matrix <- matrix(
@@ -27,7 +27,7 @@ cost_matrix <- rbind(lambda = rep(0.3, ncol(cost_matrix)), cost_matrix)
 cost_matrix <- cbind(lambda = c(0, rep(0.3, nrow(cost_matrix)-1)), cost_matrix)
 cost_matrix
 
-## ------------------------------------------------------------------------
+## ----message=FALSE, warning=FALSE, fig.width = 6, fig.height = 3---------
 align_obj <- ReSET::align(T_1, T_2, cost_matrix)
 plot(align_obj$tree, show.node.label = T, no.margin = F, 
        edge.width = 2, edge.color = 'gray', cex = 1.4, font = 1, 
