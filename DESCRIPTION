@@ -21,7 +21,8 @@ Imports:
   ggplot2,
   tidyr,
   dplyr,
-  seriation
+  seriation,
+  ape
 Suggests:
   testthat,
   knitr,
