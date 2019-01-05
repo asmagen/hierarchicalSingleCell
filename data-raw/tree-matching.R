@@ -24,9 +24,4 @@ cost_matrix <- rbind(lambda = rep(0.3, ncol(cost_matrix)), cost_matrix)
 cost_matrix <- cbind(lambda = c(0, rep(0.3, nrow(cost_matrix)-1)), cost_matrix)
 cost_matrix
 
-# Let's try it on real dataset
-data('T3K_hierarchy')
-T3K_tree <- with(T3K_hierarchy, ReSET::as_binary_tree(hclust, data, membership))
 
-data('T4K_hierarchy')
-T4K_tree <- with(T4K_hierarchy, ReSET::as_binary_tree(hclust, data, membership))

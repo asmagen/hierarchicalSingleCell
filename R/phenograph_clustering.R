@@ -20,7 +20,7 @@ construct_hierarchy <- function(data, membership, func) {
   dend_k = dendextend::find_k(dend)
   dend = dendextend::color_branches(dend, dend_k$k)
   dend2 = dendextend::seriate_dendrogram(dend, dist)
-  ret = list(data=cluster.mean, dend=dend2, hclust = hclust)
+  ret = list(dend=dend2, hclust = hclust, data = data, membership = membership)
   class(ret) = "hierarchy"
   return(ret)
 }

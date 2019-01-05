@@ -20,7 +20,7 @@ plot <- function(x, ...) {
 #' @param tree A binary tree object
 #' @export
 plot.binary_tree <- function(tree) {
-  plot(as_phylo(tree), show.node.label = T, no.margin = F, 
+  ape::plot.phylo(as_phylo(tree), show.node.label = T, no.margin = F, 
        edge.width = 2, edge.color = 'gray', cex = 1.4, font = 1, 
        label.offset = 0.1)
 }
@@ -65,7 +65,7 @@ add_internal_node_label <- function(newick_string) {
   vec_ret <- c(vec[1])
   suppressWarnings(
     for (j in seq(2, length(vec))) {
-      if (vec[j] %in% c(')', ';') & is.na(as.numeric(vec[j - 1]))) {
+      if (vec[j] %in% c(')', ';', ',') & is.na(as.numeric(vec[j - 1]))) {
         vec_ret <- c(vec_ret, i)
         i <- i + 1
       }
@@ -80,13 +80,33 @@ remove_branch_length <- function(newick_string) {
   gsub(':[0-9.]+', '', newick_string, fixed = F)
 }
 
-summarize_nodes <- function(tree, data, membership, f) {
-  summary_stats_helper <- function(node, x) {
-    
+get_all_children <- function(x) {
+  if (is.null(x$left) & is.null(x$right)) {
+    return(x$label)
+  } else {
+    return(c(get_all_children(x$left), get_all_children(x$right)))
   }
-  summary_stats <- c()
-  summary_stats <- summary_stats_helper(tree, summary_stats)
-  return(summary_stats)
+}
+
+get_all_children_leaves <- function(tree, children_map) {
+  children_map[[tree$label]] <- get_all_children(tree)
+  if (!is.null(tree$left)) children_map <- get_all_children_leaves(tree$left, children_map)
+  if (!is.null(tree$right)) children_map <- get_all_children_leaves(tree$right, children_map)
+  return(children_map)
+}
+
+summarize_nodes <- function(tree, data, membership, f) {
+  children_map <- get_all_children_leaves(tree, list())
+  
+  summary_stats_helper <- function(node, x) {
+    if(is.null(node)) return(x)
+    summarized <- apply(data[membership %in% children_map[[node$label]], ], 2, f)
+    x <- rbind(x, c(node$label, summarized))
+    x <- summary_stats_helper(node$left, x)
+    x <- summary_stats_helper(node$right, x)
+    return(x)
+  }
+  summary_stats_helper(tree, c())
 }
 
 #' Convert a hclust object as a binary tree object
@@ -101,6 +121,10 @@ as_binary_tree.hclust <- function(hclust_obj, data, membership, f) {
   newick_string <- add_internal_node_label(remove_branch_length(ape::write.tree(tree, digits = 0)))
   tree <- as_binary_tree.default(newick_string)
   summary_stats <- summarize_nodes(tree, data, membership, f)
+  cluster <- unname(summary_stats[,1])
+  summary_stats <- summary_stats[,-1]
+  rownames(summary_stats) <- cluster
+  class(summary_stats) <- 'numeric'
   return(list(tree = tree, summary_stats = summary_stats))
 } 
 
@@ -114,6 +138,7 @@ as_binary_tree.default <- function(newick_string) {
   tree <- deserialize_helper(root, vec[-1])
   return(tree)
 }
+
 
 # convert phylo to binary tree object
 serialize_helper <- function(x, vec, left) {
