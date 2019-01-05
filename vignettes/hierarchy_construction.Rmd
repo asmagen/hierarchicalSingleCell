@@ -34,3 +34,33 @@ T4K_data <- Seurat::FindClusters(T4K_data, reduction.type = "pca", dims.use = 1:
 T4K_hierarchy <- ReSET::construct_hierarchy(t(T4K_data@scale.data[T4K_data@var.genes, ]), membership = T4K_data@ident, mean)
 stats:::plot.dendrogram(T4K_hierarchy$dend)
 ```
+
+Let's perform alignment on the above two trees. First, we uses `as_binary_tree` convert the `hclust` object to a `binary_tree` object that labels every node in the tree and compute the mean of each cluster. 
+
+```{r message=FALSE, warning=FALSE}
+T3K_tree <- with(T3K_hierarchy, ReSET::as_binary_tree(hclust, data, membership, mean))
+T4K_tree <- with(T4K_hierarchy, ReSET::as_binary_tree(hclust, data, membership, mean))
+```
+
+Here is the same two trees with every node labeled. 
+
+```{r message=FALSE, warning=FALSE, fig.width = 8, fig.height = 4}
+par(mfrow = c(1, 2))
+plot(T3K_tree$tree)
+plot(T4K_tree$tree)
+```
+
+We create the cost matrix to perform alignment next. We use 1 - Pearson correlation coeffcient of every pair of nodes between the two trees. 
+
+```{r message=FALSE, warning=FALSE, fig.width = 8, fig.height = 4}
+cost_matrix <- ReSET::cor_cost_matrix(T3K_tree$summary_stats, T4K_tree$summary_stats)
+cost_matrix[1:5, 1:5]
+```
+
+To align the trees, we use the `align` function. We plot the aligned tree as follows. 
+
+```{r message=FALSE, warning=FALSE, fig.width = 8, fig.height = 6}
+align_obj <- ReSET::align(T3K_tree$tree, T4K_tree$tree, cost_matrix)
+plot(align_obj$tree)
+```
+

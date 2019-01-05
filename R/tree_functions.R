@@ -21,8 +21,8 @@ plot <- function(x, ...) {
 #' @export
 plot.binary_tree <- function(tree) {
   ape::plot.phylo(as_phylo(tree), show.node.label = T, no.margin = F, 
-       edge.width = 2, edge.color = 'gray', cex = 1.4, font = 1, 
-       label.offset = 0.1)
+       edge.width = 2.3, edge.color = 'gray', cex = 0.9, font = 1, 
+       label.offset = 0.1, underscore = T)
 }
 
 postorder <- function(x, f) {
@@ -58,7 +58,6 @@ as_binary_tree <- function(x, ...) {
 }
 
 add_internal_node_label <- function(newick_string) {
-  #print(newick_string)
   numbers <- na.omit(as.numeric(strsplit(newick_string, '[,();]+', fixed = F)[[1]]))
   i <- max(numbers) + 1
   vec <- strsplit(newick_string, '')[[1]]
@@ -127,6 +126,16 @@ as_binary_tree.hclust <- function(hclust_obj, data, membership, f) {
   class(summary_stats) <- 'numeric'
   return(list(tree = tree, summary_stats = summary_stats))
 } 
+
+#' Convert a phylo object as a binary tree object
+#' @param phylo_obj A phylo object
+#' @return A binary tree object 
+#' @export
+as_binary_tree.phylo <- function(phylo_obj) {
+  newick_string <- ape::write.tree(phylo_obj, digits = 0)
+  tree <- as_binary_tree.default(newick_string)
+  return(tree)
+}
 
 #' Convert a newick string as a binary tree object
 #' @param newick_string A newick string

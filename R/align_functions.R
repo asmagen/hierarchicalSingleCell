@@ -223,20 +223,30 @@ traceback <- function(align_obj) {
   return(align_obj)
 }
 
+postorder2 <- function(x, alignment, left) {
+  if (is.null(x)) return(alignment)
+  else {
+    insert <- ifelse(left, paste_collapse(x$label, 'lambda'), paste_collapse('lambda', x$label))
+    alignment <- c(alignment, insert)
+    if (!is.null(x$left)) alignment <- c(alignment, ')')
+    alignment <- postorder2(x$left, alignment, left)
+    if (!is.null(x$right)) alignment <- c(alignment, ',')
+    alignment <- postorder2(x$right, alignment, left)
+    if (!is.null(x$left)) alignment <- c(alignment, '(')
+  }
+  return(alignment)
+}
+
 recurse <- function(align_obj, x, y, left) {
   x_cond <- is.null(x)
   y_cond <- is.null(y)
   if (left & !(x_cond & y_cond)) align_obj$alignment <- c(align_obj$alignment, ')')
+  
   if (x_cond & !y_cond) {
-    postorder(y, function(t) {
-      align_obj$alignment <<- c(align_obj$alignment, paste_collapse('lambda', t$label))
-    })
+    align_obj$alignment <- postorder2(y, align_obj$alignment, left = F)
   } else if (y_cond & !x_cond) {
-    postorder(x, function(t) {
-      align_obj$alignment <<- c(align_obj$alignment, paste_collapse(t$label, 'lambda'))
-    })
-  } 
-  else if (!(x_cond | y_cond)) {
+    align_obj$alignment <- postorder2(x, align_obj$alignment, left = T)
+  } else if (!(x_cond | y_cond)) { 
     choix <- align_obj$T_choice[x$label, y$label]
     if (choix == 3) {
       align_obj$alignment <- c(align_obj$alignment,  paste_collapse(x$label, y$label))
@@ -262,6 +272,7 @@ recurse <- function(align_obj, x, y, left) {
       }
     }
   }
+  
   if (!left & !(x_cond & y_cond)) align_obj$alignment <- c(align_obj$alignment, '(')
   if (left & !(x_cond & y_cond)) align_obj$alignment <- c(align_obj$alignment, ',')
   return(align_obj)
@@ -269,6 +280,6 @@ recurse <- function(align_obj, x, y, left) {
 
 build_tree <- function(align_obj) {
   text <- paste0(paste0(rev(align_obj$alignment[-c(1, length(align_obj$alignment))]), collapse = ''), ';')
-  align_obj$tree <- ape::read.tree(text = text)
+  align_obj$tree <- as_binary_tree(ape::read.tree(text = text))
   return(align_obj)
 }

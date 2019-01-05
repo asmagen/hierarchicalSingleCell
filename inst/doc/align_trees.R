@@ -29,7 +29,5 @@ cost_matrix
 
 ## ----message=FALSE, warning=FALSE, fig.width = 6, fig.height = 3---------
 align_obj <- ReSET::align(T_1, T_2, cost_matrix)
-plot(align_obj$tree, show.node.label = T, no.margin = F, 
-       edge.width = 2, edge.color = 'gray', cex = 1.4, font = 1, 
-       label.offset = 0.1, underscore = T)
+plot(align_obj$tree)
 
