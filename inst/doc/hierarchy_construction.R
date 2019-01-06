@@ -32,3 +32,31 @@ cost_matrix[1:5, 1:5]
 align_obj <- ReSET::align(T3K_tree$tree, T4K_tree$tree, cost_matrix)
 plot(align_obj$tree)
 
+## ----message=FALSE, warning=FALSE----------------------------------------
+data('T3K')
+T3K_tree <- ReSET::construct_hierarchy(t(T3K$normalized_data), T3K$membership, median)
+data('T4K')
+T4K_tree <- ReSET::construct_hierarchy(t(T4K$normalized_data), T4K$membership, median)
+
+## ----message=FALSE, warning=FALSE, fig.width = 8, fig.height = 5---------
+par(mfrow = c(1, 2))
+stats:::plot.dendrogram(T3K_tree$dend)
+stats:::plot.dendrogram(T4K_tree$dend)
+
+## ----message=FALSE, warning=FALSE----------------------------------------
+T3K_binary_tree <- with(T3K_tree, ReSET::as_binary_tree(hclust, data, membership, median))
+T4K_binary_tree <- with(T4K_tree, ReSET::as_binary_tree(hclust, data, membership, median))
+
+## ----message=FALSE, warning=FALSE----------------------------------------
+cost_matrix <- ReSET::cor_cost_matrix(T3K_binary_tree$summary_stats, T4K_binary_tree$summary_stats)
+align_obj <- ReSET::align(T3K_binary_tree$tree, T4K_binary_tree$tree, cost_matrix)
+
+## ----message=FALSE, warning=FALSE, fig.width = 8, fig.height = 5---------
+par(mfrow = c(1, 2))
+plot(T3K_binary_tree$tree)
+plot(T4K_binary_tree$tree)
+
+## ----message=FALSE, warning=FALSE, fig.width = 8, fig.height = 5---------
+par(mfrow = c(1, 1))
+plot(align_obj$tree)
+

@@ -46,3 +46,30 @@ for (i in rownames(cost_matrix)) {
 align_obj <- ReSET::align(T3K_tree$tree, T4K_tree$tree, cost_matrix)
 plot(as_binary_tree(align_obj$tree))
 
+
+# Let's try the annotated dataset from Assaf
+load('inst/extdata/T3k.RData')
+
+T3K_tree2 <- ReSET::construct_hierarchy(t(normalized), tree[,9], median)
+labels <- unique(tree[,c(8,9)])
+T3K_map <- hashmap::hashmap(labels[,1], labels[,2])
+
+load('inst/extdata/T4k.RData')
+T4K_tree2 <- ReSET::construct_hierarchy(t(normalized), tree[,11], median)
+labels <- unique(tree[,c(10,11)])
+T4K_map <- hashmap::hashmap(labels[,1], labels[,2])
+
+stats:::plot.dendrogram(T3K_tree2$dend)
+stats:::plot.dendrogram(T4K_tree2$dend)
+
+T3K_binary_tree <- with(T3K_tree2, ReSET::as_binary_tree(hclust, data, membership, median))
+T4K_binary_tree <- with(T4K_tree2, ReSET::as_binary_tree(hclust, data, membership, median))
+par(mfrow = c(1, 2))
+plot(T3K_binary_tree$tree)
+plot(T4K_binary_tree$tree)
+
+cost_matrix <- ReSET::cor_cost_matrix(T3K_binary_tree$summary_stats, T4K_binary_tree$summary_stats)
+cost_matrix[1:5, 1:5]
+align_obj <- ReSET::align(T3K_binary_tree$tree, T4K_binary_tree$tree, cost_matrix)
+plot(align_obj$tree)
+

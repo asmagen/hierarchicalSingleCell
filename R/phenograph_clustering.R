@@ -6,15 +6,17 @@
 #' @param membership A vector of cluster membership.
 #' @return A hclust object.
 #' @export
-#' @author Meng Wang
-construct_hierarchy <- function(data, membership, func) {
-  cluster.mean = c()
-  for (cluster in unique(membership)) {
-    cluster.data = data[membership == cluster,]
-    cluster.mean = rbind(cluster.mean, apply(cluster.data, 2, func))
+construct_hierarchy <- function(data, membership, func = median, dist_method = 'euclidean') {
+  cluster_split <- lapply(split(data.frame(data), membership), function(x) apply(x, 2, func))
+  clusters <- names(cluster_split)
+  cluster_summary <- c()
+  dump <- lapply(cluster_split, function(x) cluster_summary <<- rbind(cluster_summary, x))
+  rownames(cluster_summary) <- clusters
+  if (dist_method == 'euclidean') {
+    dist <- stats::dist(cluster_summary, method='euclidean')
+  } else if (dist_method == 'correlation') {
+    dist <- as.dist(1 - cor(t(cluster_summary)))
   }
-  rownames(cluster.mean) = as.character(unique(membership))
-  dist = stats::dist(cluster.mean, method='euclidean')
   hclust = stats::hclust(dist, method='complete')
   dend = as.dendrogram(hclust)
   dend_k = dendextend::find_k(dend)

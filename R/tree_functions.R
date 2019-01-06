@@ -58,13 +58,15 @@ as_binary_tree <- function(x, ...) {
 }
 
 add_internal_node_label <- function(newick_string) {
-  numbers <- na.omit(as.numeric(strsplit(newick_string, '[,();]+', fixed = F)[[1]]))
-  i <- max(numbers) + 1
+  labels <- strsplit(newick_string, '[,();]+', fixed = F)[[1]]
+  labels <- labels[labels != '']
+  suppressWarnings(numbers <- na.omit(as.numeric(labels)))
+  i <- ifelse(length(numbers)!=0, max(numbers) + 1, 1)
   vec <- strsplit(newick_string, '')[[1]]
   vec_ret <- c(vec[1])
   suppressWarnings(
     for (j in seq(2, length(vec))) {
-      if (vec[j] %in% c(')', ';', ',') & is.na(as.numeric(vec[j - 1]))) {
+      if (vec[j] %in% c(')', ';', ',') & (vec[j - 1] == ')')) {
         vec_ret <- c(vec_ret, i)
         i <- i + 1
       }

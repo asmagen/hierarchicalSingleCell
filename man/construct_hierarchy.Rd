@@ -4,7 +4,8 @@
 \alias{construct_hierarchy}
 \title{Construct Hierarchy based on Cluster Mean}
 \usage{
-construct_hierarchy(data, membership, func)
+construct_hierarchy(data, membership, func = median,
+  dist_method = "euclidean")
 }
 \arguments{
 \item{data}{A data matrix to compute cluster mean..}
@@ -16,7 +17,4 @@ A hclust object.
 }
 \description{
 Construct cluster hierarchy based on the mean of each cluster.
-}
-\author{
-Meng Wang
 }

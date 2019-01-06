@@ -102,8 +102,7 @@ T1_lambda <- function(align_obj, i, j) {
   align_obj$T_matrix[i, 'lambda'] + min(subtree_cost)
 }
 
-paste_collapse <- function(...) paste0(c(...), collapse = '_')
-
+paste_collapse <- function(...) paste0(c(...), collapse = ' ')
 
 T1_T2 <- function(align_obj, i, j) {
   F_i_j <- align_obj$F_map[[paste_collapse(1, i, 1, 2, 2, j, 1, 2)]] 
@@ -144,11 +143,11 @@ fill_matrix <- function(align_obj) {
 }
 
 fill_F <- function(align_obj, x, y) {
-  x <- strsplit(x, split = '_')[[1]][-1]
+  x <- strsplit(x, split = ' ')[[1]][-1]
   i <- x[1]
   s <- as.numeric(x[2])
   mi <- as.numeric(x[3])
-  y <- strsplit(y, split = '_')[[1]][-1]
+  y <- strsplit(y, split = ' ')[[1]][-1]
   j <- y[1]
   t <- as.numeric(y[2])
   nj <- as.numeric(y[3])
@@ -279,6 +278,7 @@ recurse <- function(align_obj, x, y, left) {
 }
 
 build_tree <- function(align_obj) {
+  align_obj$alignment <- sapply(align_obj$alignment, function(x) gsub(' ', '_', x))
   text <- paste0(paste0(rev(align_obj$alignment[-c(1, length(align_obj$alignment))]), collapse = ''), ';')
   align_obj$tree <- as_binary_tree(ape::read.tree(text = text))
   return(align_obj)
