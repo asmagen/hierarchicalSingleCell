@@ -6,7 +6,10 @@
 #' @param membership A vector of cluster membership.
 #' @return A hclust object.
 #' @export
-construct_hierarchy <- function(data, membership, func = median, dist_method = 'euclidean') {
+construct_hierarchy <- function(data, membership, method = 'median', dist_method = 'euclidean',
+                                hclust_method = 'complete') {
+  if (method == 'mean') func <- function(v) log(base::mean(exp(v) - 1) + 1)
+  else if (method == 'median') func <- function(v) log(stats::median(exp(v) - 1) + 1)
   cluster_split <- lapply(split(data.frame(data), membership), function(x) apply(x, 2, func))
   clusters <- names(cluster_split)
   cluster_summary <- c()
@@ -14,10 +17,12 @@ construct_hierarchy <- function(data, membership, func = median, dist_method = '
   rownames(cluster_summary) <- clusters
   if (dist_method == 'euclidean') {
     dist <- stats::dist(cluster_summary, method='euclidean')
-  } else if (dist_method == 'correlation') {
-    dist <- as.dist(1 - cor(t(cluster_summary)))
+  } else if (dist_method == 'spearman') {
+    dist <- as.dist(1 - cor(t(cluster_summary), method = 'spearman'))
+  } else if (dist_method == 'pearson') {
+    dist <- as.dist(1 - cor(t(cluster_summary), method = 'pearson'))
   }
-  hclust = stats::hclust(dist, method='complete')
+  hclust = stats::hclust(dist, method = hclust_method)
   dend = as.dendrogram(hclust)
   dend_k = dendextend::find_k(dend)
   dend = dendextend::color_branches(dend, dend_k$k)

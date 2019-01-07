@@ -19,10 +19,10 @@ plot <- function(x, ...) {
 #' Plot binary tree
 #' @param tree A binary tree object
 #' @export
-plot.binary_tree <- function(tree) {
+plot.binary_tree <- function(tree, ...) {
   ape::plot.phylo(as_phylo(tree), show.node.label = T, no.margin = F, 
        edge.width = 2.3, edge.color = 'gray', cex = 0.9, font = 1, 
-       label.offset = 0.1, underscore = T)
+       label.offset = 0.1, underscore = T, ...)
 }
 
 postorder <- function(x, f) {
@@ -117,7 +117,10 @@ summarize_nodes <- function(tree, data, membership, f) {
 #' @return A list containing the binary tree object and a vector of summary statistics on each node
 #' @export
 #' @import ape
-as_binary_tree.hclust <- function(hclust_obj, data, membership, f) {
+as_binary_tree.hclust <- function(hclust_obj, data, membership, method = 'median') {
+  f <- switch(method,
+              median = function(v) log(stats::median(exp(v) - 1) + 1),
+              mean = function(v) log(base::mean(exp(v) - 1) + 1))
   tree <- ape::as.phylo(hclust_obj)
   newick_string <- add_internal_node_label(remove_branch_length(ape::write.tree(tree, digits = 0)))
   tree <- as_binary_tree.default(newick_string)

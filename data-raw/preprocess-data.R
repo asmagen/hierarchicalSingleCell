@@ -73,3 +73,9 @@ cost_matrix[1:5, 1:5]
 align_obj <- ReSET::align(T3K_binary_tree$tree, T4K_binary_tree$tree, cost_matrix)
 plot(align_obj$tree)
 
+library(iheatmapr)
+main_heatmap(1 - cost_matrix[-1,-1], name = 'correlation') %>%
+  add_row_labels() %>%
+  add_col_labels() %>%
+  add_row_clustering() %>%
+  add_col_clustering()
