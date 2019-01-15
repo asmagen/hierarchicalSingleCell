@@ -6,15 +6,28 @@
 #' @param membership A vector of cluster membership.
 #' @return A hclust object.
 #' @export
-construct_hierarchy <- function(data, membership, method = 'median', dist_method = 'euclidean',
-                                hclust_method = 'complete') {
-  if (method == 'mean') func <- function(v) log(base::mean(exp(v) - 1) + 1)
-  else if (method == 'median') func <- function(v) log(stats::median(exp(v) - 1) + 1)
-  cluster_split <- lapply(split(data.frame(data), membership), function(x) apply(x, 2, func))
-  clusters <- names(cluster_split)
-  cluster_summary <- c()
-  dump <- lapply(cluster_split, function(x) cluster_summary <<- rbind(cluster_summary, x))
-  rownames(cluster_summary) <- clusters
+construct_hierarchy <- function(data, membership, dist_method = 'euclidean', #method = 'median', 
+                                hclust_method = 'complete', foldchange = T) {
+  #if (method == 'mean') 
+  func <- function(v) log(base::mean(exp(v) - 1) + 1)
+  #else if (method == 'median') func <- function(v) log(stats::median(exp(v) - 1) + 1)
+  #browser()
+  if(!foldchange) {
+    cluster_split <- split(data.frame(data), membership)
+    clusters <- names(cluster_split)
+    cluster_split_summary <- lapply(cluster_split, function(x) apply(x, 2, func))
+    cluster_summary <- c()
+    dump <- lapply(cluster_split_summary, function(x) cluster_summary <<- rbind(cluster_summary, x))
+    rownames(cluster_summary) <- clusters
+  } else {
+    clusters <- unique(membership)
+    cluster_summary <- c()
+    for (i in clusters) {
+      cluster_summary <- rbind(cluster_summary, as.numeric(apply(data[membership == i,], 2, func) / apply(data[membership != i,], 2, func)))
+    }
+    rownames(cluster_summary) <- clusters
+  }
+  
   if (dist_method == 'euclidean') {
     dist <- stats::dist(cluster_summary, method='euclidean')
   } else if (dist_method == 'spearman') {
@@ -22,6 +35,7 @@ construct_hierarchy <- function(data, membership, method = 'median', dist_method
   } else if (dist_method == 'pearson') {
     dist <- as.dist(1 - cor(t(cluster_summary), method = 'pearson'))
   }
+  
   hclust = stats::hclust(dist, method = hclust_method)
   dend = as.dendrogram(hclust)
   dend_k = dendextend::find_k(dend)
