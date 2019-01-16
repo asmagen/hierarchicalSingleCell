@@ -4,7 +4,7 @@
 \alias{plot.binary_tree}
 \title{Plot binary tree}
 \usage{
-\method{plot}{binary_tree}(tree)
+\method{plot}{binary_tree}(tree, ...)
 }
 \arguments{
 \item{tree}{A binary tree object}

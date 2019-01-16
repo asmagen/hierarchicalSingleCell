@@ -4,7 +4,8 @@
 \alias{as_binary_tree.hclust}
 \title{Convert a hclust object as a binary tree object}
 \usage{
-\method{as_binary_tree}{hclust}(hclust_obj, data, membership, f)
+\method{as_binary_tree}{hclust}(hclust_obj, data, membership,
+  method = "median")
 }
 \arguments{
 \item{hclust_obj}{A hclust object}

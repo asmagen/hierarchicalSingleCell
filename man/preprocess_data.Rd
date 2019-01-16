@@ -5,7 +5,9 @@
 \title{Preprocess 10X dataset}
 \usage{
 preprocess_data(path, min.cells = 3, min.genes = 200,
-  nGene_thresh = 0.98, percent_mito_thresh = 0.98)
+  nGene_thresh = NULL, percent_mito_thresh = 0.98,
+  mito_thresh = NULL, x.low.cutoff = 0.1, x.high.cutoff = 8,
+  y.cutoff = 1, regress = F)
 }
 \arguments{
 \item{path}{The path to the dataset}

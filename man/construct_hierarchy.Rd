@@ -4,8 +4,8 @@
 \alias{construct_hierarchy}
 \title{Construct Hierarchy based on Cluster Mean}
 \usage{
-construct_hierarchy(data, membership, func = median,
-  dist_method = "euclidean")
+construct_hierarchy(data, membership, dist_method = "euclidean",
+  hclust_method = "complete", foldchange = T)
 }
 \arguments{
 \item{data}{A data matrix to compute cluster mean..}
