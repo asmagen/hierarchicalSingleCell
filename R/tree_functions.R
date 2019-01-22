@@ -12,6 +12,7 @@ binary_tree <- function(label, left = NULL, right = NULL) {
 }
 
 #' Generic function for plotting binary tree
+#' @export
 plot <- function(x, ...) {
   UseMethod("plot", x)
 }
@@ -53,6 +54,8 @@ as_phylo <- function(binary_tree) {
 }
 
 
+#' Generic method for convert trees to binary tree
+#' @export
 as_binary_tree <- function(x, ...) {
   UseMethod("as_binary_tree", x)
 }
@@ -78,7 +81,7 @@ add_internal_node_label <- function(newick_string) {
 }
 
 remove_branch_length <- function(newick_string) {
-  gsub(':[0-9.]+', '', newick_string, fixed = F)
+  gsub(':[0-9.e+]+', '', newick_string, fixed = F)
 }
 
 get_all_children <- function(x) {
@@ -130,7 +133,7 @@ as_binary_tree.hclust <- function(hclust_obj, data, membership, method = 'median
   rownames(summary_stats) <- cluster
   class(summary_stats) <- 'numeric'
   return(list(tree = tree, summary_stats = summary_stats))
-} 
+}
 
 #' Convert a phylo object as a binary tree object
 #' @param phylo_obj A phylo object
