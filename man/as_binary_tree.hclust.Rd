@@ -13,6 +13,8 @@
 \item{data}{A data matrix}
 
 \item{membership}{A membership matrix for leaves}
+
+\item{method}{A string indicating method for summarizing the nodes}
 }
 \value{
 A list containing the binary tree object and a vector of summary statistics on each node

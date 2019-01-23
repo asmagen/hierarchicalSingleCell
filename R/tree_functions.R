@@ -55,6 +55,11 @@ as_phylo <- function(binary_tree) {
 
 
 #' Generic method for convert trees to binary tree
+#' 
+#' `as_binary_tree` is a generic function for converting various objects into a 
+#' binary_tree object
+#' @param object An object to be converted to a binary_tree
+#' @param ... Additional arguments for conversion
 #' @export
 as_binary_tree <- function(x, ...) {
   UseMethod("as_binary_tree", x)
@@ -117,6 +122,7 @@ summarize_nodes <- function(tree, data, membership, f) {
 #' @param hclust_obj A hclust object
 #' @param data A data matrix
 #' @param membership A membership matrix for leaves
+#' @param method A string indicating method for summarizing the nodes
 #' @return A list containing the binary tree object and a vector of summary statistics on each node
 #' @export
 #' @import ape
