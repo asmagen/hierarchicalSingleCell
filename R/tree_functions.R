@@ -1,20 +1,14 @@
-#' create a binary tree node
+#' Create a binary tree object
 #' 
 #' @param label The label of the node
-#' @param left The left tree node
-#' @param right The right tree node
+#' @param left The left binary tree 
+#' @param right The right binary tree
 #' @return A list representing the tree
 #' @export
 binary_tree <- function(label, left = NULL, right = NULL) {
   tree <- list(label = label, left = left, right = right)
   class(tree) <- 'binary_tree'
   return(tree)
-}
-
-#' Generic function for plotting binary tree
-#' @export
-plot <- function(x, ...) {
-  UseMethod("plot", x)
 }
 
 #' Plot binary tree
@@ -34,7 +28,7 @@ postorder <- function(x, f) {
 
 #' Get labels by postorder traversal
 #' 
-#' @param x A root node of tree
+#' @param x A binary tree
 #' @return labels of tree in postorder
 #' @export
 postorder_labels <- function(x) {
@@ -161,7 +155,6 @@ as_binary_tree.default <- function(newick_string) {
   tree <- deserialize_helper(root, vec[-1])
   return(tree)
 }
-
 
 # convert phylo to binary tree object
 serialize_helper <- function(x, vec, left) {

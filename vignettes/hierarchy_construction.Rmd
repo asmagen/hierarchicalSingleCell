@@ -23,7 +23,7 @@ We performed graph-based clustering using `Seurat` and construct a tree of the c
 
 ```{r message=FALSE, warning=FALSE, fig.width = 6, fig.height = 3}
 T3K_data <- Seurat::FindClusters(T3K_data, reduction.type = "pca", dims.use = 1:12, resolution = 2, print.output = 0) # 12 clusters
-T3K_hierarchy <- ReSET::construct_hierarchy(t(T3K_data@scale.data[T3K_data@var.genes, ]), membership = T3K_data@ident, mean)
+T3K_hierarchy <- ReSET::construct_hierarchy(t(T3K_data@scale.data[T3K_data@var.genes, ]), membership = T3K_data@ident)
 stats:::plot.dendrogram(T3K_hierarchy$dend)
 ```
 
@@ -31,15 +31,15 @@ And here is the dendrogram for `T4K` dataset.
 
 ```{r message=FALSE, warning=FALSE, fig.width = 6, fig.height = 3}
 T4K_data <- Seurat::FindClusters(T4K_data, reduction.type = "pca", dims.use = 1:12, resolution = 2, print.output = 0) # 13 clusters
-T4K_hierarchy <- ReSET::construct_hierarchy(t(T4K_data@scale.data[T4K_data@var.genes, ]), membership = T4K_data@ident, mean)
+T4K_hierarchy <- ReSET::construct_hierarchy(t(T4K_data@scale.data[T4K_data@var.genes, ]), membership = T4K_data@ident)
 stats:::plot.dendrogram(T4K_hierarchy$dend)
 ```
 
 Let's perform alignment on the above two trees. First, we uses `as_binary_tree` convert the `hclust` object to a `binary_tree` object that labels every node in the tree and compute the mean of each cluster. 
 
 ```{r message=FALSE, warning=FALSE}
-T3K_tree <- with(T3K_hierarchy, ReSET::as_binary_tree(hclust, data, membership, mean))
-T4K_tree <- with(T4K_hierarchy, ReSET::as_binary_tree(hclust, data, membership, mean))
+T3K_tree <- with(T3K_hierarchy, ReSET::as_binary_tree(hclust, data, membership))
+T4K_tree <- with(T4K_hierarchy, ReSET::as_binary_tree(hclust, data, membership))
 ```
 
 Here is the same two trees with every node labeled. 
@@ -53,7 +53,7 @@ plot(T4K_tree$tree)
 We create the cost matrix to perform alignment next. We use 1 - Pearson correlation coeffcient of every pair of nodes between the two trees. 
 
 ```{r message=FALSE, warning=FALSE, fig.width = 8, fig.height = 4}
-cost_matrix <- ReSET::cor_cost_matrix(T3K_tree$summary_stats, T4K_tree$summary_stats)
+cost_matrix <- ReSET::cost_matrix(T3K_tree$summary_stats, T4K_tree$summary_stats)
 cost_matrix[1:5, 1:5]
 ```
 
@@ -70,9 +70,9 @@ In the following example, we show how to use `ReSET` with user-provided clusteri
 
 ```{r message=FALSE, warning=FALSE}
 data('T3K')
-T3K_tree <- ReSET::construct_hierarchy(t(T3K$normalized_data), T3K$membership, median)
+T3K_tree <- ReSET::construct_hierarchy(t(T3K$normalized_data), T3K$membership)
 data('T4K')
-T4K_tree <- ReSET::construct_hierarchy(t(T4K$normalized_data), T4K$membership, median)
+T4K_tree <- ReSET::construct_hierarchy(t(T4K$normalized_data), T4K$membership)
 ```
 
 Here are the constructed hierarchies:
@@ -95,7 +95,7 @@ T4K_binary_tree <- with(T4K_tree, ReSET::as_binary_tree(hclust, data, membership
 We defined the cost matrix similarly and run alignment algorithm. 
 
 ```{r message=FALSE, warning=FALSE}
-cost_matrix <- ReSET::cor_cost_matrix(T3K_binary_tree$summary_stats, T4K_binary_tree$summary_stats)
+cost_matrix <- ReSET::cost_matrix(T3K_binary_tree$summary_stats, T4K_binary_tree$summary_stats)
 align_obj <- ReSET::align(T3K_binary_tree$tree, T4K_binary_tree$tree, cost_matrix)
 ```
 

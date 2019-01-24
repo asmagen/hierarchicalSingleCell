@@ -20,7 +20,8 @@ Imports:
   dplyr,
   seriation,
   ape,
-  Seurat
+  Seurat,
+  purrr
 Suggests:
   testthat,
   knitr,

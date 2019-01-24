@@ -7,7 +7,7 @@
 postorder_labels(x)
 }
 \arguments{
-\item{x}{A root node of tree}
+\item{x}{A binary tree}
 }
 \value{
 labels of tree in postorder

@@ -2,20 +2,20 @@
 % Please edit documentation in R/tree_functions.R
 \name{binary_tree}
 \alias{binary_tree}
-\title{create a binary tree node}
+\title{Create a binary tree object}
 \usage{
 binary_tree(label, left = NULL, right = NULL)
 }
 \arguments{
 \item{label}{The label of the node}
 
-\item{left}{The left tree node}
+\item{left}{The left binary tree}
 
-\item{right}{The right tree node}
+\item{right}{The right binary tree}
 }
 \value{
 A list representing the tree
 }
 \description{
-create a binary tree node
+Create a binary tree object
 }
