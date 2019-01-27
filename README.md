@@ -65,13 +65,17 @@ python = 2.7
 R >= 3.5
 
 # Project Team (Alphabetical Order)
+## Main team
 * [Assaf Magen](https://github.com/asmagen) (Team Lead)
-* [Jonathan Badger](https://github.com/jhbadger)
+* [Mamie Wang](https://github.com/Mamie)
 * [Billy Kim](https://github.com/bkim62)
+
+## Contributors
+* [Jonathan Badger](https://github.com/jhbadger)
 * [Claire Malley](https://github.com/cemalley)
 * [Chris Rhodes](https://github.com/ctrhodes)
 * [Amulya Shastry](https://github.com/amulyashastry)
-* [Mamie Wang](https://github.com/Mamie)
+
 
 # Presentations
 - [day 1](https://github.com/NCBI-Hackathons/robustSingleCell/blob/master/docs/presentation/robustSingleCellHackathon.pdf)
