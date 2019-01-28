@@ -66,3 +66,30 @@ plot.hierarchy = function(x, ha_row=NULL, show_row_names=T, show_col_names=F) {
   }
   
 }
+
+#' Construct clustering tree from proportion graph
+#' @param clusters.aggregate A data matrix with cluster membership at different levels (column names should be K1, K2, ...)
+#' @return A list containing a proportion graph and a trimmed version keeping only the incident edge with highest weight for each node
+#' @export
+#' @import tidygraph
+clustertree_construction <- function(clusters.aggregate) {
+  prefix = "K"
+  node_aes_list <- list(colour = list(value = prefix, aggr = NULL), size = list(value = "size", aggr = NULL), 
+                        alpha = list(value = 1, aggr = NULL))
+  graph <- clustree:::build_tree_graph(clusters.aggregate, "K", metadata = NULL, count_filter = 0, prop_filter = 0.1, node_aes_list = node_aes_list)
+  graph_trimmed <- graph %>%
+    tidygraph::activate(edges) %>% 
+    tidygraph::group_by(to_K, to_clust) %>%
+    tidygraph::top_n(1, in_prop)
+  return(list(graph = graph, trimmed = graph_trimmed))
+}
+
+#' Plot a igraph object
+#' @param graph An igraph object
+#' @export
+#' @import ggraph
+plot_graph <- function(graph) {
+  ggraph::ggraph(graph, 'igraph', algorithm = 'tree') + 
+    geom_edge_link() +
+    ggforce::theme_no_axes()
+}

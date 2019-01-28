@@ -21,7 +21,10 @@ Imports:
   seriation,
   ape,
   Seurat,
-  purrr
+  purrr,
+  ggraph,
+  clustree,
+  tidygraph
 Suggests:
   testthat,
   knitr,
