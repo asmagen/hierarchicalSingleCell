@@ -90,6 +90,7 @@ initialize_T22 <- function(align_object) {
 fill_matrix2 <- function(align_obj) {
   align_obj$T_choice <- align_obj$T_matrix
   align_obj$T_choice[,] <- NA
+  align_obj$F_choice <- list()
   
   for (i in rownames(align_obj$T_matrix)[-1]) {
     for (j in colnames(align_obj$T_matrix)[-1]) {
@@ -163,6 +164,7 @@ fill_F_helper2 <- function(align_obj, i, s, p, j, t, q) {
   loc <- paste_collapse(1, i, s, p, 2, j, t, q)
   # print(paste0(loc, ":", all))
   align_obj$F_map[[loc]] <- min(all)
+  align_obj$F_choice[[loc]] <- which.min(all)
   return(align_obj)
 }
 
@@ -192,7 +194,6 @@ fill_case_52 <- function(align_obj, i, s, p, j, t, q) {
   case_5 <- align_obj$cost_matrix[align_obj$T1_children[[i]][p], 'lambda'] + min(case_5)
   return(case_5)
 } 
-
 
 lambda_T22 <- function(align_obj, i, j) {
   subtree_cost <- c()

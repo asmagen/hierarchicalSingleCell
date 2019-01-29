@@ -21,6 +21,4 @@ cost_matrix
 
 align_obj <- ReSET::create_align_object2(T_1, T_2, cost_matrix)
 align_obj <- ReSET::fill_matrix2(align_obj)
-
-align_obj <- ReSET::align(T_1, T_2, cost_matrix)
-plot(align_obj$tree)
+# TODO : traceback
